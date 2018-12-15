@@ -1,0 +1,87 @@
+*{
+    margin: 0;
+}
+body{
+    position: relative;
+}
+canvas{
+    position: absolute;
+    top:80px;
+    left: 140px;
+    background-color: rgb(163, 163, 163);
+}
+.icon {
+    width: 2em; height: 2em;
+    vertical-align: -0.15em;
+    margin: 10px;
+    fill: currentColor;
+    overflow: hidden;
+ }
+.component{
+    position: fixed;
+    left:20px;
+    top:5px;
+}
+.active{
+    fill: red;
+    transform: scale(1.3);
+    transition: all 0.4s;
+}
+.color{
+    position: fixed;
+    top: 90px;
+}
+.color li{
+
+    list-style-type: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.color .black{
+    background-color: black;
+}
+.color .red{
+    background-color: red;
+}
+.color .green{
+    background-color: green;
+}
+.color .blue{
+    background-color: blue;
+}
+
+.lineWidth {
+    position: fixed;
+    top: 280px;
+    left: 25px;
+}
+
+.lineWidth li{
+    list-style-type: none;
+    margin: 10px 0;
+    width: 80px;
+}
+
+.lineWidth .width1{
+    height:2px;
+    background-color: black;
+}
+.lineWidth .width2{
+    height:4px;
+    background-color: black;
+}
+.lineWidth .width4{
+    height:8px;
+    background-color: black;
+}
+.lineWidth .width8{
+    height:12px;
+    background-color: black;
+}
+
+.lineWidth .setLineWidth{
+    transform: scale(1.2,1);
+    transition: all 0.4s;
+}
