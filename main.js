@@ -1,9 +1,9 @@
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 context.strokeStyle = "black";
-context.lineWidth = 1;
-context.lineJoin = "round";
-context.lineCap = "round";
+context.lineWidth = 10;
+
+context.lineJoin = context.lineCap = 'round';
 document.body.ontouchstart = function (a) {
     a.preventDefault();
 }
@@ -147,11 +147,22 @@ function eraser(newPoint) {
 //draw
 function draw(lastPoint, newPoint) {
     context.beginPath();
-    context.moveTo(lastPoint[0], lastPoint[1]);
-    context.lineTo(newPoint[0], newPoint[1]);
+    context.moveTo(lastPoint[0], lastPoint[1])
+    var midPoint = [];
+    midPoint[0] = (lastPoint[0] + newPoint[0])/2;
+    midPoint[1] = (lastPoint[1] + newPoint[1])/2;
+    context.quadraticCurveTo(lastPoint[0], lastPoint[1],midPoint[0],midPoint[1]);
+    // context.quadraticCurveTo(midPoint[0],midPoint[1],newPoint[0], newPoint[1]);
+    context.lineTo()
     context.stroke();
 }
-
+var points = [];
+function midPointBtw(p1, p2) {
+    return {
+      x: p1.x + (p2.x - p1.x) / 2,
+      y: p1.y + (p2.y - p1.y) / 2
+    };
+  }
 //mouse event
 function mouseEvent() {
     //mouse click
@@ -159,26 +170,41 @@ function mouseEvent() {
         mouseClick = true;
         var x = mouseDown.clientX-140;
         var y = mouseDown.clientY-80;
-        context.arc(x,y,context.lineWidth,0,Math.PI*2,true);
+        points.push({ 'x': x, 'y': y });
         lastPoint = [x, y];
     }
     //mouse move
     canvas.onmousemove = function (mouseMove) {
         var x = mouseMove.clientX-140;
         var y = mouseMove.clientY-80;
-        newPoint = [x, y];
+        newPoint = [x,y];      
         if (mouseClick) {
             if (drawEnabled) {
-                draw(lastPoint, newPoint);
+                points.push({'x':x ,'y':y});
+                // draw(lastPoint, newPoint);
+                var p1 = points[0];
+                var p2 = points[1];               
+                context.beginPath();
+                context.moveTo(p1.x, p1.y);             
+                for (var i = 1, len = points.length; i < len; i++) {
+                  // we pick the point between pi+1 & pi+2 as the
+                  // end point and p1 as our control point
+                  var midPoint = midPointBtw(p1, p2);
+                  context.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+                  p1 = points[i];
+                  p2 = points[i+1];}
+                  context.lineTo(p1.x, p1.y);
+                  context.stroke();
             } else if (eraserEnabled) {
                 eraser(newPoint);
             }
-            lastPoint = newPoint;
+            // lastPoint = newPoint;
         }
     }
     //mouseUp
     canvas.onmouseup = function () {
         mouseClick = false;
+        points.length = 0;
     }
 }
 
