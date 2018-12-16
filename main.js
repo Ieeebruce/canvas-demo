@@ -159,6 +159,7 @@ function mouseEvent() {
         mouseClick = true;
         var x = mouseDown.clientX-140;
         var y = mouseDown.clientY-80;
+        context.arc(x,y,context.lineWidth,0,Math.PI*2,true);
         lastPoint = [x, y];
     }
     //mouse move
