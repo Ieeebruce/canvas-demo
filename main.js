@@ -2,7 +2,8 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 context.strokeStyle = "black";
 context.lineWidth = 1;
-context.lineCap="round";
+context.lineJoin = "round";
+context.lineCap = "round";
 document.body.ontouchstart = function (a) {
     a.preventDefault();
 }
@@ -96,7 +97,7 @@ function changeColor() {
         colorRed.classList.add("active");
     }
     colorBlue.onclick = function () {
-        context.strokeStyle = "green";
+        context.strokeStyle = "blue";
         removeActive();
         colorBlue.classList.add("active");
     }
