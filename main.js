@@ -2,7 +2,7 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 context.strokeStyle = "black";
 context.lineWidth = 1;
-context.lineJoin = "bevel";
+context.lineCap="round";
 document.body.ontouchstart = function (a) {
     a.preventDefault();
 }
