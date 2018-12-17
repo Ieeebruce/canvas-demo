@@ -61,11 +61,11 @@ function buttonClick() {
     }
     downloadButton.onclick = function () {
         var url = canvas.toDataURL();
-        // var a = document.getElementById("img");
-        // a.href = url;
-        // a.click();
-        // a.href = "#";
-        document.write('<img src="' + url + '"/>');
+        var a = document.getElementById("img");
+        a.href = url;
+        a.click();
+        a.href = "#";
+        // document.write('<img src="' + url + '"/>');
     }
 }
 
@@ -148,12 +148,8 @@ function eraser(newPoint) {
 function draw(lastPoint, newPoint) {
     context.beginPath();
     context.moveTo(lastPoint[0], lastPoint[1])
-    var midPoint = [];
-    midPoint[0] = (lastPoint[0] + newPoint[0])/2;
-    midPoint[1] = (lastPoint[1] + newPoint[1])/2;
-    context.quadraticCurveTo(lastPoint[0], lastPoint[1],midPoint[0],midPoint[1]);
-    // context.quadraticCurveTo(midPoint[0],midPoint[1],newPoint[0], newPoint[1]);
-    context.lineTo()
+    context.lineTo(newPoint[0],newPoint[1]);
+    context.closePath();
     context.stroke();
 }
 var points = [];
@@ -169,36 +165,22 @@ function mouseEvent() {
     canvas.onmousedown = function (mouseDown) {
         mouseClick = true;
         var x = mouseDown.clientX-140;
-        var y = mouseDown.clientY-80;
+        var y = mouseDown.clientY;
         points.push({ 'x': x, 'y': y });
         lastPoint = [x, y];
     }
     //mouse move
     canvas.onmousemove = function (mouseMove) {
         var x = mouseMove.clientX-140;
-        var y = mouseMove.clientY-80;
+        var y = mouseMove.clientY;
         newPoint = [x,y];      
         if (mouseClick) {
-            if (drawEnabled) {
-                points.push({'x':x ,'y':y});
-                // draw(lastPoint, newPoint);
-                var p1 = points[0];
-                var p2 = points[1];               
-                context.beginPath();
-                context.moveTo(p1.x, p1.y);             
-                for (var i = 1, len = points.length; i < len; i++) {
-                  // we pick the point between pi+1 & pi+2 as the
-                  // end point and p1 as our control point
-                  var midPoint = midPointBtw(p1, p2);
-                  context.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
-                  p1 = points[i];
-                  p2 = points[i+1];}
-                  context.lineTo(p1.x, p1.y);
-                  context.stroke();
+            if (drawEnabled) {          
+                draw(lastPoint, newPoint);
             } else if (eraserEnabled) {
                 eraser(newPoint);
             }
-            // lastPoint = newPoint;
+            lastPoint = newPoint;
         }
     }
     //mouseUp
@@ -214,13 +196,13 @@ function touchEvent() {
     canvas.ontouchstart = function (touchBegin) {
         mouseClick = true;
         var x = touchBegin.touches[0].clientX-140;
-        var y = touchBegin.touches[0].clientY-80;
+        var y = touchBegin.touches[0].clientY;
         lastPoint = [x, y];
     }
     //touch move
     canvas.ontouchmove = function (touchMove) {
         var x = touchMove.touches[0].clientX-140;
-        var y = touchMove.touches[0].clientY-80;
+        var y = touchMove.touches[0].clientY;
         newPoint = [x, y];
         if (mouseClick) {
             if (drawEnabled) {
@@ -242,5 +224,5 @@ function autoCanvasSize() {
     var pageWidth = document.documentElement.clientWidth;
     var pageHeight = document.documentElement.clientHeight;
     canvas.width = pageWidth-140;
-    canvas.height = pageHeight-80;
+    canvas.height = pageHeight;
 }
