@@ -130,7 +130,7 @@ function changeWidth() {
         removeSetWidth();
         width8.classList.add("setLineWidth");
     }
-    var removeSetWidth = function(){
+    var removeSetWidth = function () {
         width1.classList.remove("setLineWidth");
         width2.classList.remove("setLineWidth");
         width4.classList.remove("setLineWidth");
@@ -148,34 +148,38 @@ function eraser(newPoint) {
 function draw(lastPoint, newPoint) {
     context.beginPath();
     context.moveTo(lastPoint[0], lastPoint[1])
-    context.lineTo(newPoint[0],newPoint[1]);
+    context.lineTo(newPoint[0], newPoint[1]);
     context.closePath();
     context.stroke();
 }
 var points = [];
+
 function midPointBtw(p1, p2) {
     return {
-      x: p1.x + (p2.x - p1.x) / 2,
-      y: p1.y + (p2.y - p1.y) / 2
+        x: p1.x + (p2.x - p1.x) / 2,
+        y: p1.y + (p2.y - p1.y) / 2
     };
-  }
+}
 //mouse event
 function mouseEvent() {
     //mouse click
     canvas.onmousedown = function (mouseDown) {
         mouseClick = true;
-        var x = mouseDown.clientX-140;
+        var x = mouseDown.clientX - 140;
         var y = mouseDown.clientY;
-        points.push({ 'x': x, 'y': y });
+        points.push({
+            'x': x,
+            'y': y
+        });
         lastPoint = [x, y];
     }
     //mouse move
     canvas.onmousemove = function (mouseMove) {
-        var x = mouseMove.clientX-140;
+        var x = mouseMove.clientX - 140;
         var y = mouseMove.clientY;
-        newPoint = [x,y];      
+        newPoint = [x, y];
         if (mouseClick) {
-            if (drawEnabled) {          
+            if (drawEnabled) {
                 draw(lastPoint, newPoint);
             } else if (eraserEnabled) {
                 eraser(newPoint);
@@ -195,13 +199,13 @@ function touchEvent() {
     //touch start
     canvas.ontouchstart = function (touchBegin) {
         mouseClick = true;
-        var x = touchBegin.touches[0].clientX-140;
+        var x = touchBegin.touches[0].clientX - 140;
         var y = touchBegin.touches[0].clientY;
         lastPoint = [x, y];
     }
     //touch move
     canvas.ontouchmove = function (touchMove) {
-        var x = touchMove.touches[0].clientX-140;
+        var x = touchMove.touches[0].clientX - 140;
         var y = touchMove.touches[0].clientY;
         newPoint = [x, y];
         if (mouseClick) {
@@ -221,8 +225,9 @@ function touchEvent() {
 
 //canvas size
 function autoCanvasSize() {
+    //获取视窗大小
     var pageWidth = document.documentElement.clientWidth;
     var pageHeight = document.documentElement.clientHeight;
-    canvas.width = pageWidth-140;
+    canvas.width = pageWidth - 140;
     canvas.height = pageHeight;
 }
