@@ -1,22 +1,25 @@
 * {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     position: relative;
     overflow-y: hidden;
+    font-size: 20px;
 }
 
 canvas {
     position: absolute;
-    left: 140px;
-    background-color: rgb(240, 240, 240);cursor: url(./imgs/pen.png);
+    background-color: #fff;
 }
 
 .icon {
-    width: 2em;
-    height: 2em;
+    width: 1.8em;
+    height: 1.8em;
     vertical-align: -0.15em;
+    padding: 0.5em;
     margin: 10px;
     fill: currentColor;
     overflow: hidden;
@@ -34,6 +37,7 @@ canvas {
 
 .active {
     fill: red;
+    border-radius: 50%;
     transform: scale(1.3);
     transition: all 0.4s;
 }
@@ -75,7 +79,7 @@ canvas {
 
 .lineWidth li {
     list-style-type: none;
-    margin: 10px 0;
+    margin: 20px 0;
     width: 80px;
 }
 

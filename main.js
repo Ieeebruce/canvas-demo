@@ -2,8 +2,8 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 context.strokeStyle = "black";
 context.lineWidth = 10;
-
-context.lineJoin = context.lineCap = 'round';
+context.lineJoin = 'round';
+context.lineCap = 'round';
 document.body.ontouchstart = function (a) {
     a.preventDefault();
 }
@@ -47,6 +47,10 @@ function buttonClick() {
         drawButton.classList.add("active");
         eraserButton.classList.remove("active");
         colorGreen.classList.add("active");
+        canvas.on('mouseenter', function () {
+            canvas.container().style.cursor = 'pointer'
+        })
+
     }
     eraserButton.onclick = function () {
         drawEnabled = false;
@@ -105,39 +109,47 @@ function changeColor() {
 
 //change brush width
 function changeWidth() {
-    var width1 = document.getElementById("width1");
-    var width2 = document.getElementById("width2");
-    var width4 = document.getElementById("width4");
-    var width8 = document.getElementById("width8");
-    width1.onclick = function () {
-        context.lineWidth = 1;
-        removeSetWidth();
-        width1.classList.add("setLineWidth");
-
-    }
-    width2.onclick = function () {
-        context.lineWidth = 2;
-        removeSetWidth();
-        width2.classList.add("setLineWidth");
-    }
-    width4.onclick = function () {
-        context.lineWidth = 4;
-        removeSetWidth();
-        width4.classList.add("setLineWidth");
-    }
-    width8.onclick = function () {
-        context.lineWidth = 8;
-        removeSetWidth();
-        width8.classList.add("setLineWidth");
-    }
-    var removeSetWidth = function () {
-        width1.classList.remove("setLineWidth");
-        width2.classList.remove("setLineWidth");
-        width4.classList.remove("setLineWidth");
-        width8.classList.remove("setLineWidth");
-    }
-
+    let range = document.getElementById("lineWidth");
+    range.onchange = function () {
+        console.log(this.value);
+        context.lineWidth = this.value;
+    };
 }
+
+// function changeWidth() {
+//     var width1 = document.getElementById("width1");
+//     var width2 = document.getElementById("width2");
+//     var width4 = document.getElementById("width4");
+//     var width8 = document.getElementById("width8");
+//     width1.onclick = function () {
+//         context.lineWidth = 1;
+//         removeSetWidth();
+//         width1.classList.add("setLineWidth");
+
+//     }
+//     width2.onclick = function () {
+//         context.lineWidth = 2;
+//         removeSetWidth();
+//         width2.classList.add("setLineWidth");
+//     }
+//     width4.onclick = function () {
+//         context.lineWidth = 4;
+//         removeSetWidth();
+//         width4.classList.add("setLineWidth");
+//     }
+//     width8.onclick = function () {
+//         context.lineWidth = 8;
+//         removeSetWidth();
+//         width8.classList.add("setLineWidth");
+//     }
+//     var removeSetWidth = function () {
+//         width1.classList.remove("setLineWidth");
+//         width2.classList.remove("setLineWidth");
+//         width4.classList.remove("setLineWidth");
+//         width8.classList.remove("setLineWidth");
+//     }
+
+// }
 
 //eraser
 function eraser(newPoint) {
@@ -154,18 +166,12 @@ function draw(lastPoint, newPoint) {
 }
 var points = [];
 
-function midPointBtw(p1, p2) {
-    return {
-        x: p1.x + (p2.x - p1.x) / 2,
-        y: p1.y + (p2.y - p1.y) / 2
-    };
-}
 //mouse event
 function mouseEvent() {
     //mouse click
     canvas.onmousedown = function (mouseDown) {
         mouseClick = true;
-        var x = mouseDown.clientX - 140;
+        var x = mouseDown.clientX;
         var y = mouseDown.clientY;
         points.push({
             'x': x,
@@ -175,7 +181,7 @@ function mouseEvent() {
     }
     //mouse move
     canvas.onmousemove = function (mouseMove) {
-        var x = mouseMove.clientX - 140;
+        var x = mouseMove.clientX;
         var y = mouseMove.clientY;
         newPoint = [x, y];
         if (mouseClick) {
@@ -199,13 +205,13 @@ function touchEvent() {
     //touch start
     canvas.ontouchstart = function (touchBegin) {
         mouseClick = true;
-        var x = touchBegin.touches[0].clientX - 140;
+        var x = touchBegin.touches[0].clientX;
         var y = touchBegin.touches[0].clientY;
         lastPoint = [x, y];
     }
     //touch move
     canvas.ontouchmove = function (touchMove) {
-        var x = touchMove.touches[0].clientX - 140;
+        var x = touchMove.touches[0].clientX;
         var y = touchMove.touches[0].clientY;
         newPoint = [x, y];
         if (mouseClick) {
@@ -228,6 +234,6 @@ function autoCanvasSize() {
     //获取视窗大小
     var pageWidth = document.documentElement.clientWidth;
     var pageHeight = document.documentElement.clientHeight;
-    canvas.width = pageWidth - 140;
+    canvas.width = pageWidth;
     canvas.height = pageHeight;
 }
