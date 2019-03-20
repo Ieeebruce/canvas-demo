@@ -16,8 +16,6 @@ window.onresize = function () {
 //监听用户鼠标或触摸事件
 listenToUsers();
 
-
-
 //下面是自定义函数
 //监听用户鼠标或触摸事件
 
@@ -69,87 +67,32 @@ function buttonClick() {
         a.href = url;
         a.click();
         a.href = "#";
-        // document.write('<img src="' + url + '"/>');
     }
 }
 
 //change brush color
 function changeColor() {
     var removeActive = function () {
-        colorBlack.classList.remove("active");
-        colorGreen.classList.remove("active");
-        colorRed.classList.remove("active");
-        colorBlue.classList.remove("active");
+        let colors = document.querySelectorAll('.color li')
+        colors.forEach((item) => {
+            item.classList.remove('active')
+        })
     }
-    var colorRed = document.getElementById("red");
-    var colorGreen = document.getElementById("green");
-    var colorBlue = document.getElementById("blue");
-    var colorBlack = document.getElementById("black");
-    colorBlack.onclick = function () {
-        context.strokeStyle = "black";
+    let colors = document.querySelectorAll('.color ol');
+    colors[0].addEventListener('click', (e) => {
+        context.strokeStyle = e.target.id
         removeActive();
-        colorBlack.classList.add("active");
-    }
-    colorGreen.onclick = function () {
-        context.strokeStyle = "green";
-        removeActive();
-        colorGreen.classList.add("active");
-    }
-    colorRed.onclick = function () {
-        context.strokeStyle = "red";
-        removeActive();
-        colorRed.classList.add("active");
-    }
-    colorBlue.onclick = function () {
-        context.strokeStyle = "blue";
-        removeActive();
-        colorBlue.classList.add("active");
-    }
+        e.target.classList.add("active");
+    })
 }
 
 //change brush width
 function changeWidth() {
     let range = document.getElementById("lineWidth");
     range.onchange = function () {
-        console.log(this.value);
         context.lineWidth = this.value;
     };
 }
-
-// function changeWidth() {
-//     var width1 = document.getElementById("width1");
-//     var width2 = document.getElementById("width2");
-//     var width4 = document.getElementById("width4");
-//     var width8 = document.getElementById("width8");
-//     width1.onclick = function () {
-//         context.lineWidth = 1;
-//         removeSetWidth();
-//         width1.classList.add("setLineWidth");
-
-//     }
-//     width2.onclick = function () {
-//         context.lineWidth = 2;
-//         removeSetWidth();
-//         width2.classList.add("setLineWidth");
-//     }
-//     width4.onclick = function () {
-//         context.lineWidth = 4;
-//         removeSetWidth();
-//         width4.classList.add("setLineWidth");
-//     }
-//     width8.onclick = function () {
-//         context.lineWidth = 8;
-//         removeSetWidth();
-//         width8.classList.add("setLineWidth");
-//     }
-//     var removeSetWidth = function () {
-//         width1.classList.remove("setLineWidth");
-//         width2.classList.remove("setLineWidth");
-//         width4.classList.remove("setLineWidth");
-//         width8.classList.remove("setLineWidth");
-//     }
-
-// }
 
 //eraser
 function eraser(newPoint) {

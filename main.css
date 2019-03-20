@@ -1,109 +1,17 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    position: relative;
-    overflow-y: hidden;
-    font-size: 20px;
-}
-
-canvas {
-    position: absolute;
-    background-color: #fff;
-}
-
-.icon {
-    width: 1.8em;
-    height: 1.8em;
-    vertical-align: -0.15em;
-    padding: 0.5em;
-    margin: 10px;
-    fill: currentColor;
-    overflow: hidden;
-}
-
-.component {
-    position: fixed;
-    left: 30px;
-    top: 20px;
-}
-
-.component li {
-    list-style-type: none;
-}
-
-.active {
-    fill: red;
-    border-radius: 50%;
-    transform: scale(1.3);
-    transition: all 0.4s;
-}
-
-.color {
-    position: fixed;
-    top: 280px;
-}
-
-.color li {
-    list-style-type: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-.color .black {
-    background-color: black;
-}
-
-.color .red {
-    background-color: red;
-}
-
-.color .green {
-    background-color: green;
-}
-
-.color .blue {
-    background-color: blue;
-}
-
-.lineWidth {
-    position: fixed;
-    top: 480px;
-    left: 25px;
-}
-
-.lineWidth li {
-    list-style-type: none;
-    margin: 20px 0;
-    width: 80px;
-}
-
-.lineWidth .width1 {
-    height: 2px;
-    background-color: black;
-}
-
-.lineWidth .width2 {
-    height: 4px;
-    background-color: black;
-}
-
-.lineWidth .width4 {
-    height: 8px;
-    background-color: black;
-}
-
-.lineWidth .width8 {
-    height: 12px;
-    background-color: black;
-}
-
-.lineWidth .setLineWidth {
-    transform: scale(1.2, 1);
-    transition: all 0.4s;
-}
+* {margin: 0;padding: 0;box-sizing: border-box;}
+body {position: relative;overflow-y: hidden;font-size: 20px;}
+canvas {position: absolute;background-color: #fff;}
+.icon {width: 1.8em;height: 1.8em;vertical-align: -0.15em;margin: 10px;fill: currentColor;overflow: hidden;}
+.component {position: fixed;left: 30px;top: 20%}
+.component li {list-style-type: none;   }
+.component li svg{width: 20px;height: 20px;}
+.active {fill: red;transform: scale(1.3);transition: all 0.4s;}
+.color {position: fixed;top: 50%;left: 37px;}
+.color li {list-style-type: none; width: 22px;height: 22px;border-radius: 50%;margin-bottom: 30px;}
+.color .black {background-color: black;}
+.color .red {background-color: red;}
+.color .green {background-color: green;}
+.color .blue {background-color: blue;}
+.lineWidth {position: absolute;top:50vh;left:90%;}
+.lineWidth li {list-style-type: none;margin: 20px 0;width: 80px;}
+.lineWidth >input {transform: rotate(-90deg);}
