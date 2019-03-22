@@ -1,13 +1,15 @@
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d');
+let canvas = document.getElementById('canvas');
+let context = canvas.getContext('2d');
 context.strokeStyle = "black";
-context.lineWidth = 10;
 context.lineJoin = 'round';
 context.lineCap = 'round';
+context.lineWidth = "3"
+context.shadowBlur = 10;
+context.shadowColor = 'rgb(0, 0, 0)';
 document.body.ontouchstart = function (a) {
     a.preventDefault();
 }
-
+let somethingDraw = false;
 //自动设置画板尺寸
 autoCanvasSize();
 window.onresize = function () {
@@ -19,11 +21,11 @@ listenToUsers();
 //下面是自定义函数
 //监听用户鼠标或触摸事件
 
-var mouseClick = false;
-var drawEnabled = true;
-var eraserEnabled = false;
-var lastPoint = [];
-var newPoint = [];
+let mouseClick = false;
+let drawEnabled = true;
+let eraserEnabled = false;
+let lastPoint = [];
+let newPoint = [];
 
 function listenToUsers() {
     buttonClick();
@@ -44,26 +46,26 @@ function buttonClick() {
         eraserEnabled = false;
         drawButton.classList.add("active");
         eraserButton.classList.remove("active");
-        colorGreen.classList.add("active");
-        canvas.on('mouseenter', function () {
-            canvas.container().style.cursor = 'pointer'
-        })
-
+        canvas.classList.remove('eraser')
+        canvas.classList.add('pen')
     }
     eraserButton.onclick = function () {
         drawEnabled = false;
         eraserEnabled = true;
         drawButton.classList.remove("active");
         eraserButton.classList.add("active");
+        canvas.classList.remove('pen')
+        canvas.classList.add('eraser')
     }
     deleteAllButton.onclick = function () {
-        var pageWidth = document.documentElement.clientWidth;
-        var pageHeight = document.documentElement.clientHeight;
+        let pageWidth = document.documentElement.clientWidth;
+        let pageHeight = document.documentElement.clientHeight;
         context.clearRect(0, 0, pageWidth, pageHeight);
+        drawButton.onclick()
     }
     downloadButton.onclick = function () {
-        var url = canvas.toDataURL();
-        var a = document.getElementById("img");
+        let url = canvas.toDataURL();
+        let a = document.getElementById("img");
         a.href = url;
         a.click();
         a.href = "#";
@@ -72,17 +74,29 @@ function buttonClick() {
 
 //change brush color
 function changeColor() {
-    var removeActive = function () {
-        let colors = document.querySelectorAll('.color li')
+    let colors = document.querySelectorAll('.color li');
+    let removeActive = function () {
         colors.forEach((item) => {
             item.classList.remove('active')
         })
     }
-    let colors = document.querySelectorAll('.color ol');
-    colors[0].addEventListener('click', (e) => {
-        context.strokeStyle = e.target.id
-        removeActive();
-        e.target.classList.add("active");
+    colors.forEach((item) => {
+        item.addEventListener('click', (e) => {
+            context.strokeStyle = e.target.id
+            removeActive();
+            e.target.classList.add("active");
+            drawButton.onclick = function () {
+                drawEnabled = true;
+                eraserEnabled = false;
+                drawButton.classList.add("active");
+                eraserButton.classList.remove("active");
+                canvas.classList.remove('eraser')
+                canvas.classList.add('pen')
+            }
+            drawButton.onclick()
+        })
+
+
     })
 }
 
@@ -90,76 +104,90 @@ function changeColor() {
 function changeWidth() {
     let range = document.getElementById("lineWidth");
     range.onchange = function () {
+        console.log(context.lineWidth)
         context.lineWidth = this.value;
+        console.log(context.lineWidth)
     };
 }
 
 //eraser
 function eraser(newPoint) {
-    context.clearRect(newPoint[0] - 3, newPoint[1] - 3, 12, 12);
+    context.clearRect(newPoint[0] - 10, newPoint[1] - 10, 30, 30);
 }
 
 //draw
-function draw(lastPoint, newPoint) {
+
+function draw(points) {
+    let p1 = points[0];
     context.beginPath();
-    context.moveTo(lastPoint[0], lastPoint[1])
-    context.lineTo(newPoint[0], newPoint[1]);
-    context.closePath();
+    context.moveTo(p1.x, p1.y);
+    for (var i = 1, len = points.length; i < len; i++) {
+        p1 = points[i];
+        context.lineTo(p1.x, p1.y);
+    }
+
     context.stroke();
 }
-var points = [];
+let points = [];
 
 //mouse event
 function mouseEvent() {
-    //mouse click
-    canvas.onmousedown = function (mouseDown) {
+    var points = [];
+    canvas.onmousedown = function (e) {
         mouseClick = true;
-        var x = mouseDown.clientX;
-        var y = mouseDown.clientY;
         points.push({
-            'x': x,
-            'y': y
+            "x": e.clientX,
+            "y": e.clientY + 32
         });
-        lastPoint = [x, y];
-    }
-    //mouse move
-    canvas.onmousemove = function (mouseMove) {
-        var x = mouseMove.clientX;
-        var y = mouseMove.clientY;
+    };
+    canvas.onmousemove = function (e) {
+        let x = e.clientX;
+        let y = e.clientY;
         newPoint = [x, y];
-        if (mouseClick) {
-            if (drawEnabled) {
-                draw(lastPoint, newPoint);
-            } else if (eraserEnabled) {
-                eraser(newPoint);
-            }
-            lastPoint = newPoint;
+        if (!mouseClick) return;
+        if (drawEnabled) {
+            points.push({
+                "x": x,
+                "y": y + 32
+            });
+            draw(points)
+
+        } else if (eraserEnabled) {
+            eraser(newPoint)
         }
-    }
-    //mouseUp
+    };
     canvas.onmouseup = function () {
         mouseClick = false;
         points.length = 0;
-    }
+    };
 }
-
 //touch event
 function touchEvent() {
     //touch start
     canvas.ontouchstart = function (touchBegin) {
         mouseClick = true;
-        var x = touchBegin.touches[0].clientX;
-        var y = touchBegin.touches[0].clientY;
+        let x = touchBegin.touches[0].clientX;
+        let y = touchBegin.touches[0].clientY;
         lastPoint = [x, y];
+        points.push({
+            x: x,
+            y: y + 32
+        });
+
     }
     //touch move
     canvas.ontouchmove = function (touchMove) {
-        var x = touchMove.touches[0].clientX;
-        var y = touchMove.touches[0].clientY;
+        let x = touchMove.touches[0].clientX;
+        let y = touchMove.touches[0].clientY;
         newPoint = [x, y];
         if (mouseClick) {
             if (drawEnabled) {
-                draw(lastPoint, newPoint);
+                points.push({
+                    "x": x,
+                    "y": y + 32
+                });
+                draw(points)
+                somethingDraw = true;
             } else if (eraserEnabled) {
                 eraser(newPoint);
             }
@@ -175,8 +203,9 @@ function touchEvent() {
 //canvas size
 function autoCanvasSize() {
     //获取视窗大小
-    var pageWidth = document.documentElement.clientWidth;
-    var pageHeight = document.documentElement.clientHeight;
+    let pageWidth = document.documentElement.clientWidth;
+    let pageHeight = document.documentElement.clientHeight;
+
     canvas.width = pageWidth;
     canvas.height = pageHeight;
 }

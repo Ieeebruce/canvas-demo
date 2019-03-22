@@ -12,6 +12,8 @@ canvas {position: absolute;background-color: #fff;}
 .color .red {background-color: red;}
 .color .green {background-color: green;}
 .color .blue {background-color: blue;}
-.lineWidth {position: absolute;top:50vh;left:90%;}
+.lineWidth {position: absolute;top:50vh;left:90%;padding: 100px 10px;}
 .lineWidth li {list-style-type: none;margin: 20px 0;width: 80px;}
 .lineWidth >input {transform: rotate(-90deg);}
+.pen{cursor: url('./pen.ico'),auto;}
+.eraser{cursor: url('./eraser.ico'),auto;}
